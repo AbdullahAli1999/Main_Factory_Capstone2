@@ -18,7 +18,6 @@ public class OrderDetails {
     private Integer order_id;
     @Column(columnDefinition = "int not null")
     private Integer product_id;
-    @NotEmpty(message = "Cannot be empty")
-    @Column(columnDefinition = "varchar(30) not null")
-    private String quantity;
+    @Column(columnDefinition = "int not null")
+    private Integer quantity;
 }

@@ -31,6 +31,8 @@ public class OrderDetailsService {
         Order oid = orderRepository.findOrderById(orderDetails.getOrder_id());
         Product pid = productRepository.findProductById(orderDetails.getProduct_id());
         if(oid.getId().equals(orderDetails.getOrder_id()) && pid.getId().equals(orderDetails.getProduct_id())){
+            pid.setQuantity_in_stock(pid.getQuantity_in_stock() - orderDetails.getQuantity());
+            productRepository.save(pid);
             orderDetailsRepository.save(orderDetails);
             return true;
         }
@@ -55,4 +57,10 @@ public class OrderDetailsService {
         orderDetailsRepository.delete(delOrderDetails);
         return true;
     }
+    //Order-details popular-products
+//
+//    public List<OrderDetails> popularProducts(){
+//        List<OrderDetails> orderDetails = orderDetailsRepository.findAll();
+//        List<OrderDetails>
+//    }
 }
