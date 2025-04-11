@@ -27,7 +27,11 @@ public class OrderService {
     public boolean addOrder(Order order){
         User uid = userRepository.findUserById(order.getUser_id());
         if(uid.getId().equals(order.getUser_id())){
+            uid.setTotalOrders(uid.getTotalOrders() + 1);
+            userRepository.save(uid);
+            order.setOrder_date(LocalDate.now());
             orderRepository.save(order);
+
             return true;
         }
         return false;

@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/v1/user")
 @RequiredArgsConstructor
@@ -43,9 +45,15 @@ public class UserController {
         }
         return ResponseEntity.status(400).body(new ApiResponse("Not found"));
     }
+    //DELETE
     @DeleteMapping("/del/{id}")
     public ResponseEntity delUser(@PathVariable Integer id){
         return ResponseEntity.status(200).body(userService.deleteUser(id));
     }
-
+    //1.Top buyers
+    @GetMapping("/get-top")
+    public ResponseEntity<List<User>> getTopBuyers(){
+        List<User> topBuyers = userService.getTopBuyers();
+        return ResponseEntity.status(200).body(topBuyers);
+    }
 }

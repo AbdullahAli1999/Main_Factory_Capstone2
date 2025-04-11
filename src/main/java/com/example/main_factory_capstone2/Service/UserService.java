@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -46,6 +47,31 @@ public class UserService {
         }
         userRepository.delete(delUser);
         return true;
+    }
+    //1.Top buyers
+    public List<User> getTopBuyers(){
+        List<User> users = userRepository.findAll();
+        List<User> topBuyers = new ArrayList<>();
+
+        for(User user : users){
+            if(user.getTotalOrders() > 0){
+                topBuyers.add(user);
+            }
+        }
+        for (int i = 0; i <topBuyers.size() ; i++) {
+            for (int j = i+1; j < topBuyers.size() ; j++) {
+                if(topBuyers.get(j).getTotalOrders() > topBuyers.get(i).getTotalOrders()){
+                    User temp = topBuyers.get(i);
+                    topBuyers.set(i, topBuyers.get(j));
+                    topBuyers.set(j,temp);
+                }
+
+            }
+        }
+        if(topBuyers.size() > 5){
+            return topBuyers.subList(0,5);
+        }
+        return topBuyers;
     }
 
 }

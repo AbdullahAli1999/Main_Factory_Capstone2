@@ -31,5 +31,7 @@ public class User {
     private String password;
     @Column(columnDefinition = ("DATE"))
     private LocalDate created_at;
+    @Column(columnDefinition = "int not null")
+    private Integer totalOrders = 0;
 
 }
