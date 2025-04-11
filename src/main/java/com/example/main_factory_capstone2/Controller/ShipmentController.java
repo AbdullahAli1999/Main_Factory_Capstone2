@@ -54,4 +54,13 @@ public class ShipmentController {
     public ResponseEntity delShipment(@PathVariable Integer id){
         return ResponseEntity.status(200).body(shipmentService.deleteShipment(id));
     }
+    //2.Track
+    @GetMapping("/track/{track}")
+    public ResponseEntity tracking(@PathVariable String track){
+        Shipment trackByNumber = shipmentService.tracking(track);
+        if(trackByNumber == null){
+            return ResponseEntity.status(400).body(new ApiResponse("Not found"));
+        }
+        return ResponseEntity.status(200).body(trackByNumber);
+    }
 }

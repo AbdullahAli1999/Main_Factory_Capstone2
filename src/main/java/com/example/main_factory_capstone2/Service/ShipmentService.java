@@ -50,5 +50,10 @@ public class ShipmentService {
         return true;
     }
 
+    //2.Tracking By number
+    public Shipment tracking(String track){
+       return shipmentRepository.byTrackingNumber(track);
+    }
+
 
 }
