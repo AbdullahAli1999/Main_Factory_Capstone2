@@ -1,6 +1,11 @@
 package com.example.main_factory_capstone2.Service;
 
+import com.example.main_factory_capstone2.Api.ApiResponse;
+import com.example.main_factory_capstone2.Model.Order;
+import com.example.main_factory_capstone2.Model.OrderDetails;
 import com.example.main_factory_capstone2.Model.User;
+import com.example.main_factory_capstone2.Repository.OrderDetailsRepository;
+import com.example.main_factory_capstone2.Repository.OrderRepository;
 import com.example.main_factory_capstone2.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -8,11 +13,14 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final OrderRepository orderRepository;
+    private final OrderDetailsRepository orderDetailsRepository;
 
     //GET
     public List<User> getAllUsers(){
@@ -72,6 +80,38 @@ public class UserService {
             return topBuyers.subList(0,5);
         }
         return topBuyers;
+    }
+
+    //3.CheckDiscount
+    public String checkDiscount(Integer id){
+        List<Order> orders = orderRepository.findAll();
+        int totalQuantity = 0;
+
+        for (Order order : orders){
+            if(order.getUser_id().equals(id)){
+                List<OrderDetails> orderDetailsList = orderDetailsRepository.findAll();
+                for (OrderDetails details : orderDetailsList){
+                    if(details.getOrder_id().equals(order.getId())){
+                        totalQuantity += details.getQuantity();
+                    }
+                }
+            }
+        }
+        if(totalQuantity > 100){
+            String coupon = generateCoupon();
+            return "10% Active. Your Coupon code:  " + coupon ;
+        }else {
+            return "No Discount";
+        }
+    }
+    public String generateCoupon(){
+        Random random = new Random();
+        String digitPart = "" + random.nextInt(10)+ random.nextInt(10) + random.nextInt(10);
+        char Letter1 = (char) ('A' + random.nextInt(26));
+        char Letter2 = (char) ('A' + random.nextInt(26));
+        String letterPart = "" + Letter1 + Letter2;
+        return digitPart + letterPart;
+
     }
 
 }

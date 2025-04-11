@@ -4,7 +4,9 @@ import com.example.main_factory_capstone2.Model.Order;
 import com.example.main_factory_capstone2.Model.OrderDetails;
 import com.example.main_factory_capstone2.Model.Product;
 import com.example.main_factory_capstone2.Model.User;
+import com.example.main_factory_capstone2.Repository.OrderDetailsRepository;
 import com.example.main_factory_capstone2.Repository.OrderRepository;
+import com.example.main_factory_capstone2.Repository.ProductRepository;
 import com.example.main_factory_capstone2.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,8 @@ import java.util.List;
 public class OrderService {
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
+    private final ProductRepository productRepository;
+    private final OrderDetailsRepository orderDetailsRepository;
 
     //GET
     public List<Order> getAllOrders() {
@@ -55,5 +59,29 @@ public class OrderService {
         }
         orderRepository.delete(delOrder);
         return true;
+    }
+    //4.place order
+    public void placeOrder(Integer userId, Integer productId, String coupon){
+        User user = userRepository.findUserById(userId);
+        Product product = productRepository.findProductById(productId);
+        int price = product.getPrice();
+        User rightCoupon = userRepository.takeCoupon(coupon);
+        if(coupon != null && coupon.length() == 5){
+            price = (int) (price * 0.9);
+        }
+        // Create and save the order
+
+        Order order = new Order();
+        order.setStatus("PENDING");
+        order.setUser_id(userId);
+        orderRepository.save(order); // Save the order to the database
+
+        // Create the order details
+        OrderDetails details = new OrderDetails();
+        details.setOrder_id(order.getId());
+        details.setProduct_id(productId);
+        details.setPrice(price);
+        details.setQuantity(1);
+        orderDetailsRepository.save(details);
     }
 }

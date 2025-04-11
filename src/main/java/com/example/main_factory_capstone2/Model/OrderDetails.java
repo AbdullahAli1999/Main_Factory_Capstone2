@@ -20,4 +20,6 @@ public class OrderDetails {
     private Integer product_id;
     @Column(columnDefinition = "int not null")
     private Integer quantity;
+    @Column(columnDefinition = "int not null")
+    private Integer price;
 }

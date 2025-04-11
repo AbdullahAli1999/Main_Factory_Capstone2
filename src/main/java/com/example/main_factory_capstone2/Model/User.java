@@ -33,5 +33,7 @@ public class User {
     private LocalDate created_at;
     @Column(columnDefinition = "int not null")
     private Integer totalOrders = 0;
+    //@Column(columnDefinition = "varchar(10)")
+    private String couponCode;
 
 }

@@ -52,4 +52,10 @@ public class OrderController {
     public ResponseEntity delUser(@PathVariable Integer id){
         return ResponseEntity.status(200).body(orderService.deleteOrder(id));
     }
+    //4.
+    @PutMapping("/place/{userId}/{productId}/{coupon}")
+    public ResponseEntity placeOrder(@PathVariable Integer userId,@PathVariable Integer productId,@PathVariable String coupon){
+        orderService.placeOrder(userId,productId,coupon);
+        return ResponseEntity.status(200).body(new ApiResponse("Order placed"));
+    }
 }

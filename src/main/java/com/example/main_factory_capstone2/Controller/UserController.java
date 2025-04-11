@@ -56,4 +56,9 @@ public class UserController {
         List<User> topBuyers = userService.getTopBuyers();
         return ResponseEntity.status(200).body(topBuyers);
     }
+    //3. checkDiscount
+    @GetMapping("/discount/{id}")
+    public ResponseEntity checkUserDiscount(@PathVariable Integer id){
+        return ResponseEntity.status(200).body(userService.checkDiscount(id));
+    }
 }
