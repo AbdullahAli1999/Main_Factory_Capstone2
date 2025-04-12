@@ -53,9 +53,19 @@ public class OrderController {
         return ResponseEntity.status(200).body(orderService.deleteOrder(id));
     }
     //4.
-    @PutMapping("/place/{userId}/{productId}/{coupon}")
+    @PostMapping("/place/{userId}/{productId}/{coupon}")
     public ResponseEntity placeOrder(@PathVariable Integer userId,@PathVariable Integer productId,@PathVariable String coupon){
         orderService.placeOrder(userId,productId,coupon);
         return ResponseEntity.status(200).body(new ApiResponse("Order placed"));
     }
+    //5.
+    @PostMapping("/return/{orderId}")
+    public ResponseEntity returnOrder(@PathVariable Integer orderId){
+        Order order = orderService.returnOrder(orderId);
+        if(order== null){
+            return ResponseEntity.status(400).body(new ApiResponse("Order not found"));
+        }
+        return ResponseEntity.status(400).body(new ApiResponse("Order returned"));
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.example.main_factory_capstone2.Service;
 
+import com.example.main_factory_capstone2.Api.ApiResponse;
 import com.example.main_factory_capstone2.Model.Order;
 import com.example.main_factory_capstone2.Model.OrderDetails;
 import com.example.main_factory_capstone2.Model.Product;
@@ -69,19 +70,35 @@ public class OrderService {
         if(coupon != null && coupon.length() == 5){
             price = (int) (price * 0.9);
         }
-        // Create and save the order
 
         Order order = new Order();
         order.setStatus("PENDING");
         order.setUser_id(userId);
-        orderRepository.save(order); // Save the order to the database
+        orderRepository.save(order);
 
-        // Create the order details
         OrderDetails details = new OrderDetails();
         details.setOrder_id(order.getId());
         details.setProduct_id(productId);
         details.setPrice(price);
         details.setQuantity(1);
         orderDetailsRepository.save(details);
+    }
+
+    //5.Return Order
+    public Order returnOrder(Integer orderId){
+        Order order = orderRepository.findOrderById(orderId);
+        if (order == null){
+            return null;
+        }
+        String status = order.getStatus();
+        if("SHIPPED".equalsIgnoreCase(status) || "PENDING".equalsIgnoreCase(status) || "PROCESSING".equalsIgnoreCase(status)){
+            order.setStatus("RETURNED");
+            orderRepository.save(order);
+            return order;
+        }else if("RETURNED".equalsIgnoreCase(status)){
+            return order;
+        }else {
+            return null;
+        }
     }
 }
