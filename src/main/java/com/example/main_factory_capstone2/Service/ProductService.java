@@ -53,4 +53,8 @@ public class ProductService {
         productRepository.delete(delProduct);
         return true;
     }
+    //6.get all product from factory
+    public List<Product> getProductFromFactory(Integer id){
+        return productRepository.findProductByFactory_id(id);
+    }
 }
