@@ -68,4 +68,10 @@ public class OrderController {
         return ResponseEntity.status(400).body(new ApiResponse("Order returned"));
     }
 
+    //7.
+    @GetMapping("/get-status/{status}")
+    public ResponseEntity getStatusOrder(@PathVariable String status){
+        return ResponseEntity.status(200).body(orderService.getOrderStatus(status));
+    }
+
 }

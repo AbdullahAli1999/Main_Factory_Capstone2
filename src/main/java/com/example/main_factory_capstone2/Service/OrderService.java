@@ -101,4 +101,10 @@ public class OrderService {
             return null;
         }
     }
+
+    //7. get orders by status
+    public List<Order> getOrderStatus(String status){
+        return orderRepository.findOrderByStatus(status);
+
+    }
 }
