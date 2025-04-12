@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/v1/product")
 @RequiredArgsConstructor
@@ -51,5 +53,23 @@ public class ProductController {
     @DeleteMapping("/del/{id}")
     public ResponseEntity delUser(@PathVariable Integer id){
         return ResponseEntity.status(200).body(productService.deleteProduct(id));
+    }
+    //9.
+    @GetMapping("/out-of-stock")
+    public ResponseEntity getStock(){
+        List<Product> products = productService.getStock();
+        if(products == null){
+            return ResponseEntity.status(200).body(new ApiResponse("No out-of-stock products found"));
+        }
+        return ResponseEntity.status(200).body(products);
+    }
+    //10.
+    @PutMapping("/restock/{pid}/{amount}")
+    public ResponseEntity reStockProduct(@PathVariable Integer pid,@PathVariable Integer amount){
+        boolean reStock = productService.reStockProduct(pid,amount);
+        if(reStock){
+            return ResponseEntity.status(200).body(new ApiResponse("Product restocked successfully."));
+        }
+        return ResponseEntity.status(400).body(new ApiResponse("Cannot"));
     }
 }

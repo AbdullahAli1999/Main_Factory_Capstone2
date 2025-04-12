@@ -57,4 +57,22 @@ public class ProductService {
     public List<Product> getProductFromFactory(Integer id){
         return productRepository.findProductByFactory_id(id);
     }
+    //9. check if stock is null
+    public List<Product> getStock(){
+        return productRepository.findProductByQuantity_in_stock(0);
+    }
+
+    //10. re-stock
+    public boolean reStockProduct(Integer pid,Integer amount){
+     List<Product> product = getStock();
+     for(Product p: product){
+         if(p.getId().equals(pid)){
+             p.setQuantity_in_stock(amount);
+             productRepository.save(p);
+             return true;
+         }
+     }
+
+        return false;
+    }
 }
