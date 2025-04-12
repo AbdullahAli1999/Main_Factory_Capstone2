@@ -107,4 +107,15 @@ public class OrderService {
         return orderRepository.findOrderByStatus(status);
 
     }
+
+    //8. Cancel order if not shipped
+    public boolean cancelOrder(Integer id){
+        Order order = orderRepository.findOrderById(id);
+        if(order == null || order.getStatus().equalsIgnoreCase("SHIPPED") || order.getStatus().equalsIgnoreCase("RETURNED")){
+    return false;
+        }
+        order.setStatus("CANCELLED");
+        orderRepository.save(order);
+        return true;
+    }
 }

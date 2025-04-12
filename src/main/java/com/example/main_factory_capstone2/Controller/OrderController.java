@@ -4,6 +4,7 @@ import com.example.main_factory_capstone2.Api.ApiResponse;
 import com.example.main_factory_capstone2.Model.Order;
 import com.example.main_factory_capstone2.Model.User;
 import com.example.main_factory_capstone2.Service.OrderService;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -72,6 +73,16 @@ public class OrderController {
     @GetMapping("/get-status/{status}")
     public ResponseEntity getStatusOrder(@PathVariable String status){
         return ResponseEntity.status(200).body(orderService.getOrderStatus(status));
+    }
+
+    //8.
+    @PutMapping("/cancel/{id}")
+    public ResponseEntity cancelOrder(@PathVariable Integer id){
+        boolean isCancelled = orderService.cancelOrder(id);
+        if(isCancelled){
+            return ResponseEntity.status(200).body(new ApiResponse("Order cancelled"));
+        }
+        return ResponseEntity.status(400).body(new ApiResponse("Order cannot be cancelled"));
     }
 
 }
