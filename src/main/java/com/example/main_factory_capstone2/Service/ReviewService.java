@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -58,5 +59,35 @@ public class ReviewService {
         }
         reviewRepository.delete(delReview);
         return true;
+    }
+    //13. top five review
+    public List<Review> getTopReviews() {
+        List<Review> allReviews = reviewRepository.findAll();
+        List<Review> topReviews = new ArrayList<>();
+
+        // Add only reviews with valid ratings
+        for (Review review : allReviews) {
+            if (review.getRating() > 0) {
+                topReviews.add(review);
+            }
+        }
+
+        // Sort manually by rating in descending order
+        for (int i = 0; i < topReviews.size(); i++) {
+            for (int j = i + 1; j < topReviews.size(); j++) {
+                if (topReviews.get(j).getRating() > topReviews.get(i).getRating()) {
+                    Review temp = topReviews.get(i);
+                    topReviews.set(i, topReviews.get(j));
+                    topReviews.set(j, temp);
+                }
+            }
+        }
+
+        // Return only top 5
+        if (topReviews.size() > 5) {
+            return topReviews.subList(0, 5);
+        }
+
+        return topReviews;
     }
 }

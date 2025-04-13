@@ -58,4 +58,10 @@ public class ReviewController {
         }
         return ResponseEntity.status(400).body(new ApiResponse("Not found"));
     }
+    //13.
+    @GetMapping("/top")
+    public ResponseEntity getTopReviews() {
+        return ResponseEntity.status(200).body(reviewService.getTopReviews());
+    }
 }
+
