@@ -47,4 +47,8 @@ public class FactoryService {
         factoryRepository.delete(delFactory);
         return true;
     }
+    //14.search by name
+    public List<Factory> searchByName(String name){
+        return factoryRepository.findFactoryByFactory_name(name);
+    }
 }

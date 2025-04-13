@@ -62,4 +62,9 @@ public class FactoryController {
         }
         return ResponseEntity.status(200).body(products);
     }
+    //14.
+    @GetMapping("/name/{name}")
+    public ResponseEntity searchByName(@PathVariable String name){
+        return ResponseEntity.status(200).body(factoryService.searchByName(name));
+    }
 }
