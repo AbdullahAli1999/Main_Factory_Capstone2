@@ -55,5 +55,19 @@ public class ShipmentService {
        return shipmentRepository.byTrackingNumber(track);
     }
 
+    //12. put  shipment status to DELIVERED if current status is IN_TRANSIT.
+    public Shipment markDelivered(Integer id){
+        Shipment shipment = shipmentRepository.findShipmentById(id);
+        if(shipment == null ||!shipment.getStatus().equalsIgnoreCase("IN_TRANSIT")){
+            return null;
+        }
+        shipment.setStatus("DELIVERED");
+        shipment.setShipment_date(LocalDate.now());
+        return shipmentRepository.save(shipment);
+
+
+    }
+
+
 
 }

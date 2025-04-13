@@ -63,4 +63,14 @@ public class ShipmentController {
         }
         return ResponseEntity.status(200).body(trackByNumber);
     }
+    //12.
+    @PutMapping("/mark/{id}")
+    public ResponseEntity markDelivered(@PathVariable Integer id){
+        Shipment shipment = shipmentService.markDelivered(id);
+
+        if(shipment == null){
+            return ResponseEntity.status(400).body(new ApiResponse("Shipment not found or is not in transit."));
+        }
+        return ResponseEntity.status(200).body(shipment);
+    }
 }
