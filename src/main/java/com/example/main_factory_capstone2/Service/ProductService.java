@@ -75,4 +75,9 @@ public class ProductService {
 
         return false;
     }
+
+    //11. range of price
+    public List<Product> rangePrice(Integer min,Integer max){
+        return productRepository.findProductByPriceBetween(min, max);
+    }
 }

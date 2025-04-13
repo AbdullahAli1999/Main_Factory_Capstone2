@@ -14,4 +14,5 @@ public interface ProductRepository extends JpaRepository<Product,Integer> {
     List<Product> findProductByFactory_id(Integer id);
     @Query("select p from Product p where p.quantity_in_stock = ?1")
     List<Product> findProductByQuantity_in_stock(Integer quantity);
+    List<Product> findProductByPriceBetween(Integer min,Integer max);
 }

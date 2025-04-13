@@ -72,4 +72,9 @@ public class ProductController {
         }
         return ResponseEntity.status(400).body(new ApiResponse("Cannot"));
     }
+    //11.
+    @GetMapping("/range/{min}/{max}")
+    public ResponseEntity findPriceByRange(@PathVariable Integer min,@PathVariable Integer max){
+        return ResponseEntity.status(200).body(productService.rangePrice(min, max));
+    }
 }
