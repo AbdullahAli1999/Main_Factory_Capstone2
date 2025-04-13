@@ -62,9 +62,9 @@ public class UserController {
         return ResponseEntity.status(200).body(userService.checkDiscount(id));
     }
     //17.
-    @GetMapping("/users/most-active")
-    public ResponseEntity<List<User>> getMostActiveUsers() {
-        return ResponseEntity.status(200).body(userService.getMostActiveUsers());
-    }
+//    @GetMapping("/users/most-active")
+//    public ResponseEntity<List<User>> getMostActiveUsers() {
+//        return ResponseEntity.status(200).body(userService.getMostActiveUsers());
+//    }
 
 }
