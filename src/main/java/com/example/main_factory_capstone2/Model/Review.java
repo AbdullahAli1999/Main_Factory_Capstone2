@@ -29,5 +29,9 @@ public class Review {
     private String comment;
     @Column(columnDefinition = "DATE")
     private LocalDate reviewDate;
+    //@NotEmpty(message = "Product Name cannot be empty")
+    @Size(max = 255, message = "Product Name can't exceed 255 characters")
+    @Column(columnDefinition = "varchar(255) not null")
+    private String productName;
 
 }

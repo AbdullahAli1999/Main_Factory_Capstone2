@@ -24,18 +24,32 @@ public class ReviewService {
     }
     //ADD
     public boolean addReview(Review review){
-        List<Order> userOrder = orderRepository.findOrderByUser_id(review.getUserId());
-        for(Order order : userOrder){
+        // Find the product by ID
+        Product product = productRepository.findProductById(review.getProductId());
+
+        if (product == null || product.getName() == null || product.getName().isEmpty()) {
+            // Product does not exist or name is empty
+            return false;
+        }
+
+        // Get all orders made by the user
+        List<Order> userOrders = orderRepository.findOrderByUser_id(review.getUserId());
+
+        for (Order order : userOrders) {
             List<OrderDetails> details = orderDetailsRepository.findByOrder_id(order.getId());
-            for (OrderDetails details1 : details){
-                if(details1.getProduct_id().equals(review.getProductId())){
+
+            for (OrderDetails detail : details) {
+                if (detail.getProduct_id().equals(review.getProductId())) {
+                    // Product found in user's order
+                    review.setProductName(product.getName());
                     review.setReviewDate(LocalDate.now());
                     reviewRepository.save(review);
                     return true;
                 }
             }
         }
-        return false;
+
+        return false; // Product not found in user's past orders
     }
 
     //UPDATE
@@ -90,4 +104,6 @@ public class ReviewService {
 
         return topReviews;
     }
+    //15. get Review by product
+
 }
