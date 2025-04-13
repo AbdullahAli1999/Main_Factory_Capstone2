@@ -1,11 +1,7 @@
 package com.example.main_factory_capstone2.Service;
 
-import com.example.main_factory_capstone2.Model.Product;
-import com.example.main_factory_capstone2.Model.Review;
-import com.example.main_factory_capstone2.Model.User;
-import com.example.main_factory_capstone2.Repository.ProductRepository;
-import com.example.main_factory_capstone2.Repository.ReviewRepository;
-import com.example.main_factory_capstone2.Repository.UserRepository;
+import com.example.main_factory_capstone2.Model.*;
+import com.example.main_factory_capstone2.Repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +14,8 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
+    private final OrderDetailsRepository orderDetailsRepository;
+    private final OrderRepository orderRepository;
 
     //GET
     public List<Review> getAllReview(){
@@ -25,11 +23,16 @@ public class ReviewService {
     }
     //ADD
     public boolean addReview(Review review){
-        User users = userRepository.findUserById(review.getUserId());
-        Product product = productRepository.findProductById(review.getProductId());
-        if(users.getId().equals(review.getUserId()) && product.getId().equals(review.getProductId())){
-            reviewRepository.save(review);
-            return true;
+        List<Order> userOrder = orderRepository.findOrderByUser_id(review.getUserId());
+        for(Order order : userOrder){
+            List<OrderDetails> details = orderDetailsRepository.findByOrder_id(order.getId());
+            for (OrderDetails details1 : details){
+                if(details1.getProduct_id().equals(review.getProductId())){
+                    review.setReviewDate(LocalDate.now());
+                    reviewRepository.save(review);
+                    return true;
+                }
+            }
         }
         return false;
     }

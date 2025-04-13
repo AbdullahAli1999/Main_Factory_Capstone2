@@ -23,6 +23,7 @@ public class ShipmentService {
     public boolean addShipment(Shipment shipment){
         Order oid = orderRepository.findOrderById(shipment.getOrder_id());
         if(oid.getId().equals(shipment.getOrder_id())){
+            shipment.setShipment_date(LocalDate.now());
             shipmentRepository.save(shipment);
             return true;
         }
