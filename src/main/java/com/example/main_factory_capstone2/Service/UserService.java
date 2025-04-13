@@ -6,6 +6,7 @@ import com.example.main_factory_capstone2.Model.OrderDetails;
 import com.example.main_factory_capstone2.Model.User;
 import com.example.main_factory_capstone2.Repository.OrderDetailsRepository;
 import com.example.main_factory_capstone2.Repository.OrderRepository;
+import com.example.main_factory_capstone2.Repository.ReviewRepository;
 import com.example.main_factory_capstone2.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final OrderRepository orderRepository;
     private final OrderDetailsRepository orderDetailsRepository;
+    private final ReviewRepository reviewRepository;
 
     //GET
     public List<User> getAllUsers(){
@@ -104,6 +106,7 @@ public class UserService {
             return "No Discount";
         }
     }
+    //16.generate coupon
     public String generateCoupon(){
         Random random = new Random();
         String digitPart = "" + random.nextInt(10)+ random.nextInt(10) + random.nextInt(10);
@@ -113,5 +116,18 @@ public class UserService {
         return digitPart + letterPart;
 
     }
+
+    //17.get most active user
+//    public List<User> getMostActiveUsers() {
+//        List<User> users = userRepository.findAll();
+//        users.sort((u1, u2) -> {
+//            int orders1 = orderRepository.findOrderByUser_id(u1.getId()).size();
+//            int reviews1 = reviewRepository.findReviewByUserId(u1.getId()).size();
+//            int orders2 = orderRepository.findOrderByUser_id(u2.getId()).size();
+//            int reviews2 = reviewRepository.findReviewByUserId(u2.getId()).size();
+//            return Integer.compare((orders2 + reviews2), (orders1 + reviews1));
+//        });
+//        return users.size() > 5 ? users.subList(0, 5) : users;
+//    }
 
 }
